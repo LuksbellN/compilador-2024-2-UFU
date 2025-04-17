@@ -1,4 +1,5 @@
 from lexico import retornatoken, Token
+from estado import estado
 
 class Pilha:
     def __init__(self):
@@ -146,8 +147,15 @@ class AnalisadorSintatico:
                 return '$'
 
     def erro(self, mensagem=""):
-        pilha_conteudo = ", ".join([str(item) for item in self.pilha.items]) if self.pilha else "pilha vazia"
-        raise SyntaxError(f"Erro sintático: {mensagem}\nToken atual: {self.prox_token}\nPilha: {pilha_conteudo}")
+        if self.token_atual:
+            linha = self.token_atual.linha
+            coluna = self.token_atual.coluna
+            print(f"Erro de sintaxe na linha {linha}, coluna {coluna}: {mensagem}")
+            print(f"Token encontrado: {self.token_atual.token} (lexema: {self.token_atual.lexema})")
+        else:
+            linha, coluna = estado.obter_posicao()
+            print(f"Erro de sintaxe na linha {linha}, coluna {coluna}: {mensagem}")
+        return False
 
     def eh_terminal(self, simbolo):
         return simbolo in self.terminais
@@ -187,17 +195,18 @@ class AnalisadorSintatico:
 
             if self.eh_terminal(X) or X == '$':
                 if X == self.prox_token:
-                    
                     print(f"Match: {X}")
                     self.pilha.desempilha()
                     self.prox_token = self.lex()
                 else:
-                    self.erro(f"Esperado '{X}', encontrado '{self.prox_token}'")
+                    self.erro(f"Token inesperado. Esperado '{X}', mas encontrado '{self.prox_token}'")
+                    return False
             else:
                 if X not in self.tabela:
-                    self.erro(f"Símbolo não-terminal '{X}' não encontrado na tabela")
+                    return self.erro(f"Erro interno: símbolo não-terminal '{X}' não encontrado na tabela de análise")
                 elif self.prox_token not in self.tabela[X]:
-                    self.erro(f"Não há produção para [{X}, {self.prox_token}]")
+                    esperados = ", ".join(f"'{t}'" for t in self.tabela[X].keys())
+                    return self.erro(f"Token '{self.prox_token}' inesperado. Tokens esperados: {esperados}")
                 else:
                     num_producao = self.tabela[X][self.prox_token]
                     self.trata_producao(num_producao)

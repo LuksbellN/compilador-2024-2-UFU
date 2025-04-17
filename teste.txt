@@ -8,17 +8,5 @@ programa teste ()
         y := y ** 2;
     %} elseif [x < 0] then {%
         x := x - 1;
-    %} else {%
-        x := 0;
     %}
-
-    while [i < 10] {%
-        i := i + 1;
-        media := media + i;
-    %}
-
-    do {%
-        j := j + 1;
-        media := media / j ;
-    %} while [j < 5];
 %} 

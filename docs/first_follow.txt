@@ -1,0 +1,45 @@
+Símbolo	FIRST
+<APLICATIVO>	{programa}
+<BLOCO>	{ { }
+<DEC_VARIAVEIS>	{int, float, char, ε}
+<DEC_VARIAVEL>	{int, float, char}
+<TIPO>	{int, float, char}
+<LISTA_IDS>	{ID}
+<LISTA_IDS’>	{, , ε}
+<SEQ_CMD>	{if, while, do, ID, ε}
+<COMAND>	{if, while, do, ID}
+<CMD_IF>	{if}
+<CMD_IF_TAIL>	{elseif, else, ε}
+<CMD_ELSEIF_LIST>	{elseif, ε}
+<CMD_ELSE_OPT>	{else, ε}
+<CMD_WHILE>	{while}
+<CMD_DO_WHILE>	{do}
+<CMD_ATRIBUICAO>	{ID}
+<CMD_OR_BLOCO>	{if, while, do, ID, { }
+<CONDICAO>	{ID, NUM}
+<EXPRE>	{ID, NUM}
+<EXPRE’>	{+, -, ε}
+<TERMO>	{ID, NUM}
+
+Símbolo	FOLLOW
+<APLICATIVO>	{$}
+<BLOCO>	{if, while, do, ID, }, elseif, else, ε}
+<DEC_VARIAVEIS>	{if, while, do, ID, }}
+<DEC_VARIAVEL>	{int, float, char, if, while, do, ID, }}
+<TIPO>	{:}
+<LISTA_IDS>	{;}
+<LISTA_IDS’>	{;}
+<SEQ_CMD>	{}}
+<COMAND>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_IF>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_IF_TAIL>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_ELSEIF_LIST>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_ELSE_OPT>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_WHILE>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_DO_WHILE>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_ATRIBUICAO>	{if, while, do, ID, elseif, else, }, ε}
+<CMD_OR_BLOCO>	{if, while, do, ID, elseif, else, }, ε}
+<CONDICAO>	{]}
+<EXPRE>	{relop, ]}
+<EXPRE’>	{relop, ]}
+<TERMO>	{+, -, relop, ]}

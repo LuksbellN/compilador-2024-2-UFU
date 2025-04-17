@@ -1,3 +1,5 @@
+from estado import estado
+
 tabela_simbolos = {}
 
 class Token:
@@ -138,1153 +140,1118 @@ def tok_virg(linha, coluna):
 
 def retornatoken(arquiv):
     c = " "
-    estado = 0
-    linha = 0
-    coluna = 0
+    estado_lexico = 0
+    linha = 1
+    coluna = 1
     value = ''
+    
     while c: 
         c = arquiv.read(1)
         if c == '\n':
             linha += 1
-            coluna = 0
-        if c != '\n':
+            coluna = 1
+        else:
             coluna += 1
-        if estado == 0:
+        estado.atualizar_posicao(linha, coluna)
+        if estado_lexico == 0:
             if c == '':
                 return '$'
             elif c.isspace():
-                estado = 91
+                estado_lexico = 91
                 continue
             elif c.isalpha() or c == '_':
                 value = c
                 if c == 'd':
-                    estado = 35
+                    estado_lexico = 35
                 elif c == 'p':
-                    estado = 1
+                    estado_lexico = 1
                 elif c == 'i':
-                    estado = 10
+                    estado_lexico = 10
                 elif c == 't':
-                    estado = 16
+                    estado_lexico = 16
                 elif c == 'e':
-                    estado = 21
+                    estado_lexico = 21
                 elif c == 'w':
-                    estado = 29
+                    estado_lexico = 29
                 elif c == 'f':
-                    estado = 38
+                    estado_lexico = 38
                 elif c == 'c':
-                    estado = 44
+                    estado_lexico = 44
                 else:
-                    estado = 63
+                    estado_lexico = 63
                 continue
             elif c == '>':
-                estado = 49
+                estado_lexico = 49
                 value += c
                 continue
             elif c == '=':
                 token = tok_relop(c, 'EQ', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == '<':
-                estado = 53
+                estado_lexico = 53
                 value += c
                 continue
             elif c == '+':
                 token = tok_op(c, '+', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == '-':
                 token = tok_op(c, '-', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == '/':
                 token = tok_op(c, '/', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == '*':
-                estado = 60
+                estado_lexico = 60
                 continue
             elif c == '{':
-                estado = 65
+                estado_lexico = 65
                 continue
             elif c == '%':
-                estado = 70
+                estado_lexico = 70
                 continue
             elif c == "'":
-                estado = 72
+                estado_lexico = 72
                 continue
             elif c == ';':
                 token = tok_pontvirg(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == '(':
                 token = tok_parentesq(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == ')':
                 token = tok_parentdir(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == ':':
-                estado = 78
+                estado_lexico = 78
                 continue
             elif c == '[':
                 token = tok_colchesq(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == ']':
                 token = tok_colchdir(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif c == ',':
                 token = tok_virg(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token            
             elif c.isdigit():
-                estado = 81
+                estado_lexico = 81
                 value += c
                 continue
             elif c in ['\n', '\t']:
-                linha += 1
-                estado = 91
+                estado_lexico = 91
                 continue
             elif c == ' ':
-                estado = 91
+                estado_lexico = 91
                 continue
             elif c.isalnum():
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
         
-        elif estado == 1:
+        elif estado_lexico == 1:
             if c == 'r':
                 value = value + c
-                estado = 2
+                estado_lexico = 2
                 continue
             elif c.isalnum() or c == '_':
-                estado = 63
+                estado_lexico = 63
                 value += c
                 continue
-            elif c in ['\n', '\t', ' ']:
-                token = tok_id(value, linha, coluna)
-                estado = 0
-                value = ''
-                coluna -= 1
-                arquiv.seek(arquiv.tell() - 1)
-                linha += 1 
-                return token
-            elif c in [' ']:
-                token = tok_id(value, linha, coluna)
-                estado = 0
-                value = ''
-                coluna -= 1
-                arquiv.seek(arquiv.tell() - 1)
-                return token
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
                 
-        elif estado == 2:
+        elif estado_lexico == 2:
             if(c == 'o'):
                 value = value + c
-                estado = 3
+                estado_lexico = 3
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 3:
+        elif estado_lexico == 3:
             if(c == 'g'):
                 value = value + c
-                estado = 4
+                estado_lexico = 4
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 4:
+        elif estado_lexico == 4:
             if(c == 'r'):
                 value = value + c
-                estado = 5
+                estado_lexico = 5
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 5:
+        elif estado_lexico == 5:
             if(c == 'a'):
                 value = value + c
-                estado = 6
+                estado_lexico = 6
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 6:
+        elif estado_lexico == 6:
             if(c == 'm'):
                 value = value + c
-                estado = 7
+                estado_lexico = 7
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 7:
+        elif estado_lexico == 7:
             if(c == 'a'):
                 value = value + c
-                estado = 8
+                estado_lexico = 8
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 8:
+        elif estado_lexico == 8:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_prog(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_prog(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 10:
+        elif estado_lexico == 10:
             if(c == 'f'):
                 value = value + c
-                estado = 11
+                estado_lexico = 11
                 continue
             elif(c == 'n'):
                 value = value + c
-                estado = 13
+                estado_lexico = 13
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 11:
+        elif estado_lexico == 11:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_if(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_if(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 13:
+        elif estado_lexico == 13:
             if(c == 't'):
                 value = value + c
-                estado = 14
+                estado_lexico = 14
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 14:
+        elif estado_lexico == 14:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_int(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_int(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 16:
+        elif estado_lexico == 16:
             if(c == 'h'):
                 value = value + c
-                estado = 17
+                estado_lexico = 17
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else: 
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 17:
+        elif estado_lexico == 17:
             if(c == 'e'):
                 value = value + c
-                estado = 18
+                estado_lexico = 18
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 18:
+        elif estado_lexico == 18:
             if(c == 'n'):
                 value = value + c
-                estado = 19
+                estado_lexico = 19
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 19:
+        elif estado_lexico == 19:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_then(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_then(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 21:
+        elif estado_lexico == 21:
             if(c == 'l'):
                 value = value + c
-                estado = 22
+                estado_lexico = 22
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 22:
+        elif estado_lexico == 22:
             if(c == 's'):
                 value = value + c
-                estado = 23
+                estado_lexico = 23
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 23:
+        elif estado_lexico == 23:
             if(c == 'e'):
                 value = value + c
-                estado = 24
+                estado_lexico = 24
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 24:
+        elif estado_lexico == 24:
             if(c == 'i'):
                 value = value + c
-                estado = 26
+                estado_lexico = 26
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_else(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_else(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 26:
+        elif estado_lexico == 26:
             if(c == 'f'):
                 value = value + c
-                estado = 27
+                estado_lexico = 27
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 27:
+        elif estado_lexico == 27:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_elseif(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_elseif(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 29:
+        elif estado_lexico == 29:
             if(c == 'h'):
                 value = value + c
-                estado = 30
+                estado_lexico = 30
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 30:
+        elif estado_lexico == 30:
             if(c == 'i'):
                 value = value + c
-                estado = 31
+                estado_lexico = 31
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 31:
+        elif estado_lexico == 31:
             if(c == 'l'):
                 value = value + c
-                estado = 32
+                estado_lexico = 32
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 32:
+        elif estado_lexico == 32:
             if(c == 'e'):
                 value = value + c
-                estado = 33
+                estado_lexico = 33
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 33:
+        elif estado_lexico == 33:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_while(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_while(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 35:
+        elif estado_lexico == 35:
             if(c == 'o'):
                 value = value + c
-                estado = 36
+                estado_lexico = 36
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 36:
+        elif estado_lexico == 36:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_do(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_do(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 38:
+        elif estado_lexico == 38:
             if(c == 'l'):
                 value = value + c
-                estado = 39
+                estado_lexico = 39
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 39:
+        elif estado_lexico == 39:
             if(c == 'o'):
                 value = value + c
-                estado = 40
+                estado_lexico = 40
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 40:
+        elif estado_lexico == 40:
             if(c == 'a'):
                 value = value + c
-                estado = 41
+                estado_lexico = 41
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 41:
+        elif estado_lexico == 41:
             if(c == 't'):
                 value = value + c
-                estado = 42
+                estado_lexico = 42
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 42:
+        elif estado_lexico == 42:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_float(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_float(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 44:
+        elif estado_lexico == 44:
             if(c == 'h'):
                 value = value + c
-                estado = 45
+                estado_lexico = 45
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 45:
+        elif estado_lexico == 45:
             if(c == 'a'):
                 value = value + c
-                estado = 46
+                estado_lexico = 46
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 46:
+        elif estado_lexico == 46:
             if(c == 'r'):
                 value = value + c
-                estado = 47
+                estado_lexico = 47
                 continue
             elif(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             else:
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 47:
+        elif estado_lexico == 47:
             if(c.isalnum() or c == '_'):
                 value = value + c
-                estado = 63
+                estado_lexico = 63
                 continue
             elif(c == '\n' or c == '\t' or c == ''):
                 token = tok_char(linha, coluna)
-                if(c == '\n'):
-                    linha += 1
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             elif(c == ' '):
                 token = tok_char(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 49:
+        elif estado_lexico == 49:
             if(c != '='):
                 value += c
                 token = tok_relop(value, 'GT', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             else:
                 value += c
                 token = tok_relop(value, 'GE', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
         
-        elif estado == 53:
+        elif estado_lexico == 53:
             if(c == '>'):
                 value += c
                 token = tok_relop(value, 'NE', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             elif(c == '='):
                 value += c
                 token = tok_relop(value, 'LE', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             else: 
                 value += c
                 token = tok_relop(value, 'LT', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif(estado == 60):
+        elif(estado_lexico == 60):
             if(c == '*'):
-                estado = 62
+                estado_lexico = 62
                 value = ''
                 continue
             else:
                 token = tok_op(c, '*', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
 
-        elif estado == 62:
+        elif estado_lexico == 62:
             if(c == '\n' or c == '\t' or c == ''):
                 value += c
                 token = tok_op('**', '**', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             if(c == ' '):
                 value += c
                 token = tok_op('**', '**', linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             else: 
-                estado = 94
+                estado_lexico = 94
                 continue
         
-        elif estado == 63:
+        elif estado_lexico == 63:
             if c.isalnum() or c == '_':
-                estado = 63
+                estado_lexico = 63
                 value += c
                 continue
             if(c == '\n' or c == '\t' or c == ''):
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             if(c == ' '):
                 token = tok_id(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 65:
+        elif estado_lexico == 65:
             if(c == '#'):
-                estado = 66
+                estado_lexico = 66
                 continue
             elif(c == '%'):
                 token = tok_ok(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 66:
+        elif estado_lexico == 66:
             if c == '#':
-                estado = 67
+                estado_lexico = 67
                 continue
             else:
-                estado = 66
+                estado_lexico = 66
                 continue
 
-        elif estado == 67:
+        elif estado_lexico == 67:
             if c == '}':
                 token = tok_comment(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 continue
             else:
-                estado = 66
+                estado_lexico = 66
                 continue
 
-        elif estado == 70:
+        elif estado_lexico == 70:
             if c == '}':
                 token = tok_ko(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 72:
+        elif estado_lexico == 72:
             if c != "'":
-                estado = 73
+                estado_lexico = 73
                 continue
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 73:
+        elif estado_lexico == 73:
             if c == "'":
                 token = tok_carac(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             else: 
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 78:
+        elif estado_lexico == 78:
             if c != '=':
                 token = tok_doispont(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
             else:
                 token = tok_doisponteq(linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 return token
 
-        elif estado == 81:
+        elif estado_lexico == 81:
             if c.isdigit():
-                estado = 81
+                estado_lexico = 81
                 value += c
                 continue
             elif c == '.':
-                estado = 83
+                estado_lexico = 83
                 value += c
                 continue
             elif c == 'E':
-                estado = 86
+                estado_lexico = 86
                 value += c
                 continue
             else:
                 token = tok_num(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 83:
+        elif estado_lexico == 83:
             if(c.isdigit()):
-                estado = 84
+                estado_lexico = 84
                 value += c
                 continue
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 84:
+        elif estado_lexico == 84:
             if (c.isdigit()):
-                estado = 84
+                estado_lexico = 84
                 value += c
                 continue
             elif c == 'E':
-                estado = 86
+                estado_lexico = 86
                 value += c
                 continue
             else:
                 token = tok_num(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 86:
+        elif estado_lexico == 86:
             if c == '+' or c == '-':
-                estado = 87
+                estado_lexico = 87
                 value += c
                 continue
             elif (c.isdigit()):
-                estado = 88
+                estado_lexico = 88
                 value += c
                 continue
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 87:
+        elif estado_lexico == 87:
             if (c.isdigit()):
-                estado = 88
+                estado_lexico = 88
                 value += c
                 continue
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
 
-        elif estado == 88:
+        elif estado_lexico == 88:
             if (c.isdigit()):
-                estado = 88
+                estado_lexico = 88
                 value += c
                 continue
             else:
                 token = tok_num(value, linha, coluna)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 return token
 
-        elif estado == 91:
+        elif estado_lexico == 91:
             if c in ['\n', '\t']:
-                linha += 1
-                estado = 91
+                estado_lexico = 91
                 continue
             elif c == ' ':
-                estado = 91
+                estado_lexico = 91
                 continue
             else:
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                estado = 0
+                estado_lexico = 0
                 value = ''
                 continue
         
-        elif estado == 94:
+        elif estado_lexico == 94:
             if(c == '\n' or c == '\t' or c == ' ' or c == ''):
                 value = ''
-                estado = 0
+                estado_lexico = 0
                 print('erro')
                 continue
             else:
-                estado = 94
+                estado_lexico = 94
                 continue
             
             
