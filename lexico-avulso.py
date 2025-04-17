@@ -17,123 +17,123 @@ def tok_id(lexema, linha, coluna):
     if token2.lexema not in tabela_simbolos:
         tabela_simbolos[token2.lexema] = token2
     print(token2)
-    return token2
+
 def tok_while(linha, coluna):
     token2 = Token('while','while', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_ws(linha, coluna):
     token2 = Token('ws','__', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_prog(linha, coluna):
     token2 = Token('programa','programa', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_if(linha, coluna):
     token2 = Token('if','if', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_int(linha, coluna):
     token2 = Token('int','int', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_then(linha, coluna):
     token2 = Token('then','then', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_else(linha, coluna):
     token2 = Token('else','else', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_elseif(linha, coluna):
     token2 = Token('elseif','elseif', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_do(linha, coluna):
     token2 = Token('do','do', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_float(linha, coluna):
     token2 = Token('float','float', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_char(linha, coluna):
     token2 = Token('char','char', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_char(linha, coluna):
     token2 = Token('char','char', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_relop(lexema, tipo, linha, coluna):
     token2 = Token('relop', lexema, tipo, linha, coluna)
     print(token2)
-    return token2
+
 def tok_op(lexema, tipo, linha, coluna):
     token2 = Token(lexema, lexema, tipo, linha, coluna)
     print(token2)
-    return token2
+
 def tok_comment(linha, coluna):
     token2 = Token('comment', '__', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_ok(linha, coluna):
     token2 = Token('{%', '{%', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_ko(linha, coluna):
     token2 = Token('%}', '%}','__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_carac(lexema, linha, coluna):
     token2 = Token('carac', lexema, '__', linha, coluna)
     if token2.lexema not in tabela_simbolos:
         tabela_simbolos[token2.lexema] = token2
     print(token2)
-    return token2
+
 def tok_pontvirg(linha, coluna):
     token2 = Token(';', ';', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_parentesq(linha, coluna):
     token2 = Token('(', '(', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_parentdir(linha, coluna):
     token2 = Token(')', ')', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_doispont(linha, coluna):
     token2 = Token(':', ':', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_doisponteq(linha, coluna):
     token2 = Token(':=', ':=', '__', linha, coluna)
     print(token2)
-    return token2
+
 def tok_num(lexema, linha, coluna):
     valor = lexema
     token2 = Token('num', lexema, valor, linha, coluna)
     if token2.lexema not in tabela_simbolos:
         tabela_simbolos[token2.lexema] = token2
     print(token2)
-    return token2
+
 
 def tok_colchesq(linha, coluna):
     token2 = Token('[', '[', '__', linha, coluna)
     print(token2)
-    return token2
+
 
 def tok_colchdir(linha, coluna):
     token2 = Token(']', ']', '__', linha, coluna)
     print(token2)
-    return token2
+
 
 def tok_virg(linha, coluna):
     token2 = Token(',', ',', '__', linha, coluna)
     print(token2)
-    return token2
+
 
 
 def retornatoken(arquiv):
@@ -184,7 +184,7 @@ def retornatoken(arquiv):
                 token = tok_relop(c, 'EQ', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == '<':
                 estado = 53
                 value += c
@@ -193,17 +193,17 @@ def retornatoken(arquiv):
                 token = tok_op(c, '+', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == '-':
                 token = tok_op(c, '-', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == '/':
                 token = tok_op(c, '/', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == '*':
                 estado = 60
                 continue
@@ -220,17 +220,17 @@ def retornatoken(arquiv):
                 token = tok_pontvirg(linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == '(':
                 token = tok_parentesq(linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == ')':
                 token = tok_parentdir(linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == ':':
                 estado = 78
                 continue
@@ -238,17 +238,17 @@ def retornatoken(arquiv):
                 token = tok_colchesq(linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == ']':
                 token = tok_colchdir(linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif c == ',':
                 token = tok_virg(linha, coluna)
                 estado = 0
                 value = ''
-                return token            
+            
             elif c.isdigit():
                 estado = 81
                 value += c
@@ -281,21 +281,21 @@ def retornatoken(arquiv):
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
                 linha += 1 
-                return token
+            
             elif c in [' ']:
                 token = tok_id(value, linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 token = tok_id(value, linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
                 
         elif estado == 2:
             if(c == 'o'):
@@ -310,7 +310,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 3:
             if(c == 'g'):
@@ -327,7 +327,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 4:
             if(c == 'r'):
@@ -344,7 +344,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 5:
             if(c == 'a'):
@@ -361,7 +361,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 6:
             if(c == 'm'):
@@ -378,7 +378,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 7:
             if(c == 'a'):
@@ -395,7 +395,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 8:
             if(c.isalnum() or c == '_'):
@@ -410,14 +410,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_prog(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -441,7 +441,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 11:
             if(c.isalnum() or c == '_'):
@@ -456,14 +456,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_if(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -483,7 +483,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 14:
             if(c.isalnum() or c == '_'):
@@ -498,14 +498,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_int(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -525,7 +525,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 17:
             if(c == 'e'):
@@ -542,7 +542,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 18:
             if(c == 'n'):
@@ -559,7 +559,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 19:
             if(c.isalnum() or c == '_'):
@@ -574,14 +574,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_then(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -601,7 +601,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 22:
             if(c == 's'):
@@ -618,7 +618,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 23:
             if(c == 'e'):
@@ -635,7 +635,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 24:
             if(c == 'i'):
@@ -654,21 +654,21 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_else(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 token = tok_id(value, linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 26:
             if(c == 'f'):
@@ -685,7 +685,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 27:
             if(c.isalnum() or c == '_'):
@@ -700,14 +700,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_elseif(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -727,7 +727,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 30:
             if(c == 'i'):
@@ -744,7 +744,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 31:
             if(c == 'l'):
@@ -761,7 +761,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 32:
             if(c == 'e'):
@@ -778,7 +778,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 33:
             if(c.isalnum() or c == '_'):
@@ -793,14 +793,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_while(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -820,7 +820,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 36:
             if(c.isalnum() or c == '_'):
@@ -835,14 +835,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_do(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -862,7 +862,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 39:
             if(c == 'o'):
@@ -879,7 +879,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 40:
             if(c == 'a'):
@@ -896,7 +896,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 41:
             if(c == 't'):
@@ -913,7 +913,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 42:
             if(c.isalnum() or c == '_'):
@@ -928,14 +928,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_float(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -955,7 +955,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 45:
             if(c == 'a'):
@@ -972,7 +972,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 46:
             if(c == 'r'):
@@ -989,7 +989,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 47:
             if(c.isalnum() or c == '_'):
@@ -1004,14 +1004,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             elif(c == ' '):
                 token = tok_char(linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -1022,13 +1022,13 @@ def retornatoken(arquiv):
                 token = tok_relop(value, 'GT', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             else:
                 value += c
                 token = tok_relop(value, 'GE', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
         
         elif estado == 53:
             if(c == '>'):
@@ -1036,13 +1036,13 @@ def retornatoken(arquiv):
                 token = tok_relop(value, 'NE', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             elif(c == '='):
                 value += c
                 token = tok_relop(value, 'LE', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             else: 
                 value += c
                 token = tok_relop(value, 'LT', linha, coluna)
@@ -1050,7 +1050,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif(estado == 60):
             if(c == '*'):
@@ -1061,7 +1061,7 @@ def retornatoken(arquiv):
                 token = tok_op(c, '*', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
 
         elif estado == 62:
             if(c == '\n' or c == '\t' or c == ''):
@@ -1069,13 +1069,13 @@ def retornatoken(arquiv):
                 token = tok_op('**', '**', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             if(c == ' '):
                 value += c
                 token = tok_op('**', '**', linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             else: 
                 estado = 94
                 continue
@@ -1091,14 +1091,14 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             if(c == ' '):
                 token = tok_id(value, linha, coluna)
                 estado = 0
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -1113,7 +1113,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -1133,7 +1133,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                continue
+            
             else:
                 estado = 66
                 continue
@@ -1145,7 +1145,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
             else:
                 estado = 94
                 continue
@@ -1163,7 +1163,7 @@ def retornatoken(arquiv):
                 token = tok_carac(value, linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             else: 
                 estado = 94
                 continue
@@ -1173,12 +1173,12 @@ def retornatoken(arquiv):
                 token = tok_doispont(linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
             else:
                 token = tok_doisponteq(linha, coluna)
                 estado = 0
                 value = ''
-                return token
+            
 
         elif estado == 81:
             if c.isdigit():
@@ -1199,7 +1199,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 83:
             if(c.isdigit()):
@@ -1225,7 +1225,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 86:
             if c == '+' or c == '-':
@@ -1260,7 +1260,7 @@ def retornatoken(arquiv):
                 value = ''
                 coluna -= 1
                 arquiv.seek(arquiv.tell() - 1)
-                return token
+            
 
         elif estado == 91:
             if c in ['\n', '\t']:

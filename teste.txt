@@ -1,5 +1,6 @@
 programa teste ()
 {%
+    {# aaaa #}
     int : x , y , i , j ;
 
     if [x > 0] then {%
